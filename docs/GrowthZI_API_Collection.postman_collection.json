@@ -1,0 +1,182 @@
+{
+  "info": {
+    "name": "GrowthZI API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Simple API endpoints for GrowthZI application"
+  },
+  "item": [
+    {
+      "name": "Resume Parser",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/portfolio",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "portfolio"]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/path/to/your/resume.pdf"
+            }
+          ]
+        },
+        "description": "Upload a resume file (PDF or DOC) and get structured data about the person's portfolio."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/portfolio",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "portfolio"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "_postman_previewlanguage": "json",
+          "body": "{\n  \"hero\": {\n    \"name\": \"John Doe\",\n    \"title\": \"Full Stack Developer\",\n    \"summary\": \"Passionate developer with 5+ years of experience\"\n  },\n  \"about\": {\n    \"bio\": \"I'm a software engineer specializing in building web applications\",\n    \"interests\": [\"Programming\", \"Machine Learning\", \"UI/UX Design\"]\n  },\n  \"skills\": [\n    {\"name\": \"JavaScript\", \"level\": \"Expert\"},\n    {\"name\": \"Python\", \"level\": \"Advanced\"}\n  ],\n  \"experience\": [\n    {\n      \"company\": \"Tech Innovators\",\n      \"position\": \"Senior Developer\",\n      \"duration\": \"2021-Present\"\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Text Translator",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/translate?target_lang=es",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "translate"],
+          "query": [
+            {
+              "key": "target_lang",
+              "value": "es",
+              "description": "The target language code (e.g., 'es' for Spanish, 'fr' for French)"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"greeting\": \"Hello\",\n  \"message\": \"How are you?\",\n  \"nested\": {\n    \"value\": \"Test\"\n  }\n}"
+        },
+        "description": "Send JSON content and get it back with text values prefixed with the specified language code."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/translate?target_lang=es",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "translate"],
+              "query": [
+                {
+                  "key": "target_lang",
+                  "value": "es"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "_postman_previewlanguage": "json",
+          "body": "{\n  \"greeting\": \"[es] Hello\",\n  \"message\": \"[es] How are you?\",\n  \"nested\": {\n    \"value\": \"[es] Test\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Price Calculator",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/pricing?country=JP",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "pricing"],
+          "query": [
+            {
+              "key": "country",
+              "value": "JP",
+              "description": "Country code (e.g., US, JP, GB, EU)"
+            }
+          ]
+        },
+        "description": "Get product pricing information based on the specified country."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/pricing?country=JP",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "pricing"],
+              "query": [
+                {
+                  "key": "country",
+                  "value": "JP"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "_postman_previewlanguage": "json",
+          "body": "{\n  \"base_price_usd\": 99.99,\n  \"country\": \"JP\",\n  \"currency\": \"JPY\",\n  \"price\": 15018.5,\n  \"product\": \"Premium Subscription\"\n}"
+        }
+      ]
+    }
+  ]
+}
