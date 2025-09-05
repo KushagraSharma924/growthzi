@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growthzi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea, button {
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>GrowthZI API Demo</h1>
+    
+    <section id="portfolio-section">
+        <h2>Resume Parser</h2>
+        <form id="portfolio-form">
+            <label for="resume-file">Upload Resume (PDF/DOC):</label>
+            <input type="file" id="resume-file" accept=".pdf,.doc,.docx" required>
+            <button type="submit">Parse Resume</button>
+        </form>
+        <pre id="portfolio-result" class="hidden"></pre>
+    </section>
+    
+    <section id="translate-section">
+        <h2>Text Translator</h2>
+        <form id="translate-form">
+            <label for="translate-json">Enter JSON content:</label>
+            <textarea id="translate-json" required placeholder='{"greeting": "Hello", "message": "How are you?"}'></textarea>
+            <label for="target-lang">Target Language Code:</label>
+            <input type="text" id="target-lang" value="es" required>
+            <button type="submit">Translate</button>
+        </form>
+        <pre id="translate-result" class="hidden"></pre>
+    </section>
+    
+    <section id="pricing-section">
+        <h2>Price Calculator</h2>
+        <form id="pricing-form">
+            <label for="country-code">Country Code (US, CA, GB, EU, JP, etc.):</label>
+            <input type="text" id="country-code" value="US" required>
+            <button type="submit">Get Price</button>
+        </form>
+        <pre id="pricing-result" class="hidden"></pre>
+    </section>
+    
+    <script>
+        document.getElementById('portfolio-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('resume-file');
+            if (!fileInput.files.length) {
+                alert('Please select a file');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch('/api/portfolio', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                const resultElement = document.getElementById('portfolio-result');
+                resultElement.textContent = JSON.stringify(result, null, 2);
+                resultElement.classList.remove('hidden');
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+        
+        document.getElementById('translate-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const jsonInput = document.getElementById('translate-json').value;
+            const targetLang = document.getElementById('target-lang').value;
+            
+            try {
+                const jsonData = JSON.parse(jsonInput);
+                
+                const response = await fetch(`/api/translate?target_lang=${targetLang}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(jsonData)
+                });
+                
+                const result = await response.json();
+                const resultElement = document.getElementById('translate-result');
+                resultElement.textContent = JSON.stringify(result, null, 2);
+                resultElement.classList.remove('hidden');
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+        
+        document.getElementById('pricing-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const countryCode = document.getElementById('country-code').value;
+            
+            try {
+                const response = await fetch(`/api/pricing?country=${countryCode}`);
+                const result = await response.json();
+                
+                const resultElement = document.getElementById('pricing-result');
+                resultElement.textContent = JSON.stringify(result, null, 2);
+                resultElement.classList.remove('hidden');
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
